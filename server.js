@@ -17,10 +17,11 @@ const connectDB = async () => {
     console.error("Unable to connect to the database:", error);
   }
 };
-dotenv.config();
+
 connectDB();
 
 // Define constants and usage of data
+dotenv.config();
 const port = process.env.API_PORT || 8080;
 const app = express();
 app.use(cors());
