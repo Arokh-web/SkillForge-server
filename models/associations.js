@@ -19,7 +19,7 @@ export function setAssociations(models) {
     foreignKey: "project_id",
   });
 
-  //   Project -> Note
+  // Project -> Note
   Project.hasMany(Note, {
     foreignKey: "project_id",
   });
@@ -39,4 +39,3 @@ export function setAssociations(models) {
     otherKey: "task_id",
   });
 }
-
