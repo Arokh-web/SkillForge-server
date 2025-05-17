@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import { Sequelize, DataTypes } from "sequelize";
 
 // Import models
-import setAssociations from "../models/associations.js";
+import { setAssociations } from "../models/associations.js";
 import Note from "../models/Note.js";
 import User from "../models/User.js";
 import Project from "../models/Project.js";

@@ -5,9 +5,10 @@ import cors from "cors";
 import errorHandler from "./middlewares/errorHandler.js";
 
 // Import database connection
-import sequelize from "./db/db_index.js";
+import { sequelize } from "./db/db_index.js";
 
 // Import routes
+import noteRouter from "./routes/note.js";
 
 // DATABASE CONNECTION
 const connectDB = async () => {
@@ -30,6 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Set up routes
+app.use("/api/notes", noteRouter);
 
 app.use(errorHandler);
 // Initializing server startup
