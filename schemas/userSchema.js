@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const userSchema = Joi.object({
+export const createUserSchema = Joi.object({
   username: Joi.string().max(25).required(),
   email: Joi.string().email().required(),
   password_hash: Joi.string().min(5).required(), 
@@ -10,4 +10,12 @@ const userSchema = Joi.object({
   profile_pic: Joi.string().uri().optional(),
 });
 
-export default userSchema;
+export const updateUserSchema = Joi.object({
+  username: Joi.string().max(25),
+  email: Joi.string().email(),
+  password_hash: Joi.string().min(5),
+  role: Joi.string().max(25),
+  xp: Joi.number().integer().min(0),
+  bio: Joi.string().allow(""),
+  profile_pic: Joi.string().uri(),
+});

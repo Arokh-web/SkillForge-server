@@ -1,5 +1,27 @@
+import validateSchema from "../middlewares/validateSchema.js";
 import Router from "express";
 
-const userRouter = Router();
+const usersRouter = Router();
 
-userRouter.route("/").get();
+import {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+} from "../controllers/users.js";
+
+import { createUserSchema, updateUserSchema } from "../schemas/userSchema.js";
+
+usersRouter
+  .route("/")
+  .get(getAllUsers)
+  .post(validateSchema(createUserSchema), createUser);
+
+usersRouter
+  .route("/me/:id")
+  .get(getUserById)
+  .put(validateSchema(updateUserSchema), updateUser)
+  .delete(deleteUser);
+
+export default usersRouter;

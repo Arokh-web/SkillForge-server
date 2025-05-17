@@ -8,7 +8,10 @@ import errorHandler from "./middlewares/errorHandler.js";
 import { sequelize } from "./db/db_index.js";
 
 // Import routes
-import noteRouter from "./routes/note.js";
+import notesRouter from "./routes/notes.js";
+import usersRouter from "./routes/users.js";
+import projectsRouter from "./routes/projects.js";
+import tasksRouter from "./routes/tasks.js";
 
 // DATABASE CONNECTION
 const connectDB = async () => {
@@ -31,7 +34,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Set up routes
-app.use("/api/notes", noteRouter);
+app.use("/api/notes", notesRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/projects", projectsRouter);
+app.use("/api/tasks", tasksRouter);
 
 app.use(errorHandler);
 // Initializing server startup

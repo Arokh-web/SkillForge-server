@@ -4,7 +4,7 @@ import ErrorResponse from "../utils/errorResponse.js";
 const Note = models.Note;
 
 // GET ALL /notes
-export const getAllNotes = async (req, res, next) => {
+export const getAllNotes = async (req, res) => {
   const notes = await Note.findAll();
   console.log("GET method on /notes: SUCCESSFULL");
   res.status(200).json(notes);
@@ -16,7 +16,7 @@ export const getNoteById = async (req, res, next) => {
   const note = await Note.findByPk(id);
 
   if (!note) {
-    return new ErrorResponse(`Note not found with id of ${id}`, 404);
+    return next(new ErrorResponse(`Note not found with id of ${id}`, 404));
   }
   console.log("GET method on /notes/:ID: SUCCESSFULL");
   res.status(200).json(note);
@@ -24,7 +24,7 @@ export const getNoteById = async (req, res, next) => {
 
 // CREATE ONE note
 export const createNote = async (req, res, next) => {
-  const { title, content } = req.body;
+  const { title, content, pinned } = req.body;
 
   const note = await Note.create({
     title,
@@ -33,4 +33,38 @@ export const createNote = async (req, res, next) => {
   });
   console.log("POST method on /notes: SUCCESSFULL");
   res.status(201).json(note);
+};
+
+// UPDATE ONE note
+export const updateNote = async (req, res, next) => {
+  const { id } = req.params;
+  const { title, content, pinned } = req.body;
+
+  const note = await Note.findByPk(id);
+
+  if (!note) {
+    return next(new ErrorResponse(`Note not found with id of ${id}`, 404));
+  }
+
+  await note.update({
+    title,
+    content,
+    pinned,
+  });
+  console.log("PUT method on /notes/:ID: SUCCESSFULL");
+  res.status(200).json(note);
+};
+
+// DELETE ONE note
+export const deleteNote = async (req, res, next) => {
+  const { id } = req.params;
+  const note = await Note.findByPk(id);
+
+  if (!note) {
+    return next(new ErrorResponse(`Note not found with id of ${id}`, 404));
+  }
+
+  await note.destroy();
+  console.log("DELETE method on /notes/:ID: SUCCESSFULL");
+  res.status(204).json({ success: true, message: "Note deleted successfully" });
 };
