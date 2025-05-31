@@ -74,3 +74,19 @@ export const deleteProject = async (req, res, next) => {
   console.log("DELETE method on /projects/:ID: SUCCESSFULL");
   res.status(204).json({ success: true });
 };
+
+// PATCH project (to update only some fields)
+export const patchProject = async (req, res, next) => {
+  const { id } = req.params;
+  const updates = req.body;
+
+  const project = await Project.findByPk(id);
+
+  if (!project) {
+    return next(new ErrorResponse(`Project not found with id of ${id}`, 404));
+  }
+  console.log("UPDATE BODY:", updates);
+  await project.update(updates);
+  console.log("PATCH method on /projects/:ID: SUCCESSFULL");
+  res.status(200).json(project);
+};

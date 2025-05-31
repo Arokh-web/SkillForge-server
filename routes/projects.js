@@ -8,6 +8,8 @@ import {
   getProjectById,
   updateProject,
   deleteProject,
+  patchProject,
+  // getAllTasks,
 } from "../controllers/projects.js";
 
 import {
@@ -24,6 +26,7 @@ projectsRouter
   .route("/:id")
   .get(getProjectById)
   .put(validateSchema(updateProjectSchema), updateProject)
+  .patch(validateSchema(updateProjectSchema), patchProject)
   .delete(deleteProject);
 
 export default projectsRouter;

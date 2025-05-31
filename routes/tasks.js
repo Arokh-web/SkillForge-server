@@ -8,6 +8,8 @@ import {
   getTaskById,
   updateTask,
   deleteTask,
+  getTasksByProjectId,
+  patchTask,
 } from "../controllers/tasks.js";
 
 import { createTaskSchema, updateTaskSchema } from "../schemas/taskSchema.js";
@@ -21,6 +23,9 @@ tasksRouter
   .route("/:id")
   .get(getTaskById)
   .put(validateSchema(updateTaskSchema), updateTask)
+  .patch(validateSchema(updateTaskSchema), patchTask)
   .delete(deleteTask);
+
+tasksRouter.route("/projects/:id").get(getTasksByProjectId);
 
 export default tasksRouter;

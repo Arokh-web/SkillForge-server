@@ -1,12 +1,28 @@
 import { models } from "../db/db_index.js";
-import ErrorResponse from "../utils/errorResponse.js";
+import ErrorResponse from "../utils/ErrorResponse.js";
 
 const Task = models.Task;
 
-// GET ALL /tasks
+// GET ALL /tasks (for all projects; admin only?)
 export const getAllTasks = async (req, res, next) => {
   const tasks = await Task.findAll();
   console.log("GET method on /tasks: SUCCESSFULL");
+  res.status(200).json(tasks);
+};
+
+// GET ALL /projects/:id/tasks (for one project)
+export const getTasksByProjectId = async (req, res, next) => {
+  const { id } = req.params;
+  const tasks = await Task.findAll({
+    where: { project_id: id },
+  });
+
+  if (!tasks) {
+    return next(
+      new ErrorResponse(`Tasks not found for project with id of ${id}`, 404)
+    );
+  }
+  console.log("GET method on /projects/:ID/tasks: SUCCESSFULL");
   res.status(200).json(tasks);
 };
 
@@ -62,6 +78,22 @@ export const updateTask = async (req, res, next) => {
     pinned,
   });
   console.log("PUT method on /tasks/:ID: SUCCESSFULL");
+  res.status(200).json(task);
+};
+
+// PATCH task (to update only some fields)
+export const patchTask = async (req, res, next) => {
+  const { id } = req.params;
+  const updates = req.body;
+
+  const task = await Task.findByPk(id);
+
+  if (!task) {
+    return next(new ErrorResponse(`Task not found with id of ${id}`, 404));
+  }
+  console.log("UPDATE BODY:", updates);
+  await task.update(updates);
+  console.log("PATCH method on /tasks/:ID: SUCCESSFULL");
   res.status(200).json(task);
 };
 
