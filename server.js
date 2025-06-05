@@ -3,6 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import errorHandler from "./middlewares/errorHandler.js";
+import cookieParser from "cookie-parser";
 
 // Import database connection
 import { sequelize } from "./db/db_index.js";
@@ -39,13 +40,14 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Set up routes
 app.use("/api/notes", notesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/projects", projectsRouter);
 app.use("/api/tasks", tasksRouter);
-app.use("/api/auth", authRouter);
+app.use("/auth", authRouter);
 
 app.use(errorHandler);
 // Initializing server startup

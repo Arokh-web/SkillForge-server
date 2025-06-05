@@ -6,22 +6,6 @@ import dotenv from "dotenv";
 const User = models.User;
 dotenv.config();
 
-// GET /auth/me
-export const getUserData = async (req, res, next) => {
-  try {
-    const user = await User.findByPk(req.userId, {
-      attributes: { exclude: ["password"] },
-    });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    console.log("GET method on /auth/me SUCCESSFULL");
-    res.status(200).json(user);
-  } catch (error) {
-    next(error);
-  }
-};
-
 // POST /auth/signin
 export const signIn = async (req, res, next) => {
   try {
@@ -42,8 +26,15 @@ export const signIn = async (req, res, next) => {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: "6d",
     });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userData = await User.findByPk(decoded.userId);
     console.log("POST/SIGNIN method on /auth/signin SUCCESSFULL");
-    res.status(200).json({ token });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax",
+    });
+    res.status(200).json(userData);
   } catch (error) {
     next(error);
   }
@@ -71,7 +62,7 @@ export const signUp = async (req, res, next) => {
       expiresIn: "6d",
     });
     console.log("POST/SIGNUP method on /auth/signup SUCCESSFULL");
-    res.status(201).json({ token });
+    res.status(201);
   } catch (error) {
     next(error);
   }

@@ -6,7 +6,7 @@ const usersRouter = Router();
 import {
   createUser,
   getAllUsers,
-  getUserById,
+  // getUserById,
   updateUser,
   deleteUser,
 } from "../controllers/users.js";
@@ -18,9 +18,10 @@ usersRouter
   .get(getAllUsers)
   .post(validateSchema(createUserSchema), createUser);
 
+// GET, ADMIN ONLY
 usersRouter
-  .route("/me/:id")
-  .get(getUserById)
+  .route("users/:id")
+  // .get(getUserById)
   .put(validateSchema(updateUserSchema), updateUser)
   .delete(deleteUser);
 
