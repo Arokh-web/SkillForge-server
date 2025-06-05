@@ -4,7 +4,7 @@ export default (sequelize, DataTypes) => {
     "User",
     {
       username: { type: DataTypes.STRING(25), allowNull: false },
-      email: { type: DataTypes.STRING(100), allowNull: false },
+      email: { type: DataTypes.STRING(100), allowNull: false, unique: true },
       password_hash: { type: DataTypes.TEXT, allowNull: false },
       role: DataTypes.STRING(25),
       xp: DataTypes.INTEGER,

@@ -1,5 +1,5 @@
 import { models } from "../db/db_index.js";
-import ErrorResponse from "../utils/errorResponse.js";
+import ErrorResponse from "../utils/ErrorResponse.js";
 
 const User = models.User;
 

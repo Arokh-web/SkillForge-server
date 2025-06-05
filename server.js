@@ -12,6 +12,7 @@ import notesRouter from "./routes/notes.js";
 import usersRouter from "./routes/users.js";
 import projectsRouter from "./routes/projects.js";
 import tasksRouter from "./routes/tasks.js";
+import authRouter from "./routes/authRouter.js";
 
 // DATABASE CONNECTION
 const connectDB = async () => {
@@ -44,6 +45,7 @@ app.use("/api/notes", notesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/projects", projectsRouter);
 app.use("/api/tasks", tasksRouter);
+app.use("/api/auth", authRouter);
 
 app.use(errorHandler);
 // Initializing server startup
