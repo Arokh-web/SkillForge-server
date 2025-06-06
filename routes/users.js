@@ -20,7 +20,7 @@ usersRouter
 
 // GET, ADMIN ONLY
 usersRouter
-  .route("users/:id")
+  .route("/:id")
   // .get(getUserById)
   .put(validateSchema(updateUserSchema), updateUser)
   .delete(deleteUser);

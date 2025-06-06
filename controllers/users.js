@@ -13,6 +13,8 @@ export const getAllUsers = async (req, res, next) => {
 // GET ONE /users/me/ - USER ONLY
 
 export const getAuthenticatedUser = async (req, res) => {
+  console.log("GET AUTH USER TRIGGERED");
+
   try {
     const token = req.cookies.token;
     if (!token) return res.status(401).json({ error: "No token found" });

@@ -33,6 +33,7 @@ export const signIn = async (req, res, next) => {
       httpOnly: true,
       secure: false,
       sameSite: "Lax",
+      maxAge: 6 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json(userData);
   } catch (error) {

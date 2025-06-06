@@ -3,24 +3,25 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const verifyToken = (req, res, next) => {
+  console.log("VERIFY TOKEN MIDDLEWARE TRIGGERED");
+  console.log("Cookies:", req.cookies);
+  console.log("Token:", req.cookies.token);
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: "No token provided." });
+  }
   try {
-    const {
-      headers: { authorization },
-    } = req;
-    if (!authorization) throw Error("Please login to access this resource");
-
-    // read the secret from the env
-    const secret = process.env.JWT_SECRET; // This will come from the server environment
-
-    // Get the token from the header (it is parted by a space)
-    const token = authorization.split(" ")[1];
     // Verifying the token with the secret and saving it as payload
-    const payload = jwt.verify(token, secret);
-
-    req.userId = payload.userId; // Create custom property in request object
+    console.log("Verifying token:", token);
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Token decoded:", payload);
+    req.userId = payload.userId;
     next();
   } catch (e) {
-    next(e);
+    console.error("Token verification failed:", e.message);
+    return res
+      .status(401)
+      .json({ error: "Unauthorized access. Invalid token." });
   }
 };
 

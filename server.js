@@ -48,6 +48,10 @@ app.use("/api/users", usersRouter);
 app.use("/api/projects", projectsRouter);
 app.use("/api/tasks", tasksRouter);
 app.use("/auth", authRouter);
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 
 app.use(errorHandler);
 // Initializing server startup
