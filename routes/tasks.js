@@ -1,7 +1,7 @@
 import validateSchema from "../middlewares/validateSchema.js";
 import Router from "express";
+import verifyToken from "../middlewares/verifyToken.js";
 
-const tasksRouter = Router();
 import {
   createTask,
   getAllTasks,
@@ -14,18 +14,20 @@ import {
 
 import { createTaskSchema, updateTaskSchema } from "../schemas/taskSchema.js";
 
+const tasksRouter = Router();
+
 tasksRouter
   .route("/")
   .get(getAllTasks)
-  .post(validateSchema(createTaskSchema), createTask);
+  .post(verifyToken, validateSchema(createTaskSchema), createTask);
 
 tasksRouter
   .route("/:id")
-  .get(getTaskById)
-  .put(validateSchema(updateTaskSchema), updateTask)
-  .patch(validateSchema(updateTaskSchema), patchTask)
-  .delete(deleteTask);
+  .get(verifyToken, getTaskById)
+  .put(verifyToken, validateSchema(updateTaskSchema), updateTask)
+  .patch(verifyToken, validateSchema(updateTaskSchema), patchTask)
+  .delete(verifyToken, deleteTask);
 
-tasksRouter.route("/projects/:id").get(getTasksByProjectId);
+tasksRouter.route("/projects/:id").get(verifyToken, getTasksByProjectId);
 
 export default tasksRouter;

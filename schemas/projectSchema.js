@@ -7,7 +7,6 @@ export const createProjectSchema = Joi.object({
   deadline: Joi.date().optional(),
   priority: Joi.string().max(25).default("normal"),
   pinned: Joi.boolean().default(false),
-  user_id: Joi.number().required(),
 });
 
 export const updateProjectSchema = Joi.object({

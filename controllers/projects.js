@@ -6,7 +6,7 @@ const Project = models.Project;
 // GET ALL /projects
 export const getAllProjects = async (req, res, next) => {
   const projects = await Project.findAll({
-    where: { userId: req.user.id },
+    where: { user_id: req.user.id },
     order: [["createdAt", "DESC"]],
   });
   console.log("GET method on /projects: SUCCESSFULL");
@@ -16,7 +16,9 @@ export const getAllProjects = async (req, res, next) => {
 // GET ONE /projects/:id
 export const getProjectById = async (req, res, next) => {
   const { id } = req.params;
-  const project = await Project.findByPk(id);
+  const project = await Project.findByPk({
+    where: { id, user_id: req.user.id },
+  });
 
   if (!project) {
     return next(new ErrorResponse(`Project not found with id of ${id}`, 404));
@@ -36,9 +38,10 @@ export const createProject = async (req, res, next) => {
     deadline,
     priority,
     pinned,
-    userId: req.user.id,
+    user_id: req.user.id,
   });
   console.log("POST method on /projects: SUCCESSFULL");
+  console.log("Created project:", project);
   res.status(201).json(project);
 };
 
@@ -47,7 +50,9 @@ export const updateProject = async (req, res, next) => {
   const { id } = req.params;
   const { title, content, status, deadline, priority, pinned } = req.body;
 
-  const project = await Project.findByPk(id);
+  const project = await Project.findByPk({
+    where: { id, user_id: req.user.id },
+  });
 
   if (!project) {
     return next(new ErrorResponse(`Project not found with id of ${id}`, 404));
@@ -68,7 +73,9 @@ export const updateProject = async (req, res, next) => {
 // DELETE ONE project
 export const deleteProject = async (req, res, next) => {
   const { id } = req.params;
-  const project = await Project.findByPk(id);
+  const project = await Project.findOne({
+    where: { id, user_id: req.user.id },
+  });
 
   if (!project) {
     return next(new ErrorResponse(`Project not found with id of ${id}`, 404));
@@ -84,7 +91,9 @@ export const patchProject = async (req, res, next) => {
   const { id } = req.params;
   const updates = req.body;
 
-  const project = await Project.findByPk(id);
+  const project = await Project.findByPk({
+    where: { id, user_id: req.user.id },
+  });
 
   if (!project) {
     return next(new ErrorResponse(`Project not found with id of ${id}`, 404));

@@ -2,8 +2,9 @@ import { models } from "../db/db_index.js";
 import ErrorResponse from "../utils/ErrorResponse.js";
 
 const Task = models.Task;
+const Project = models.Project;
 
-// GET ALL /tasks (for all projects; admin only?)
+// GET ALL /tasks (for all projects; admin only!)
 export const getAllTasks = async (req, res, next) => {
   const tasks = await Task.findAll();
   console.log("GET method on /tasks: SUCCESSFULL");
@@ -13,15 +14,22 @@ export const getAllTasks = async (req, res, next) => {
 // GET ALL /projects/:id/tasks (for one project)
 export const getTasksByProjectId = async (req, res, next) => {
   const { id } = req.params;
-  const tasks = await Task.findAll({
-    where: { project_id: id },
+  console.log("Project ID:", id);
+  console.log("User ID:", req.user.id);
+
+  const project = await Project.findOne({
+    where: { id, user_id: req.user.id },
   });
 
-  if (!tasks) {
-    return next(
-      new ErrorResponse(`Tasks not found for project with id of ${id}`, 404)
-    );
+  if (!project) {
+    return next(new ErrorResponse(`Project not found with id of ${id}`, 404));
   }
+
+  const tasks = await Task.findAll({
+    where: { project_id: id },
+    order: [["createdAt", "DESC"]],
+  });
+
   console.log("GET method on /projects/:ID/tasks: SUCCESSFULL");
   res.status(200).json(tasks);
 };
