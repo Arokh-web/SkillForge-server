@@ -8,6 +8,14 @@ export default (sequelize, DataTypes) => {
       content: { type: DataTypes.TEXT, allowNull: false },
       status: { type: DataTypes.STRING(25), defaultValue: "active" },
       deadline: DataTypes.DATE,
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "id",
+        },
+      },
       createdAt: {
         type: DataTypes.DATE,
         field: "created_at",

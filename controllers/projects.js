@@ -5,7 +5,10 @@ const Project = models.Project;
 
 // GET ALL /projects
 export const getAllProjects = async (req, res, next) => {
-  const projects = await Project.findAll();
+  const projects = await Project.findAll({
+    where: { userId: req.user.id },
+    order: [["createdAt", "DESC"]],
+  });
   console.log("GET method on /projects: SUCCESSFULL");
   res.status(200).json(projects);
 };
@@ -33,6 +36,7 @@ export const createProject = async (req, res, next) => {
     deadline,
     priority,
     pinned,
+    userId: req.user.id,
   });
   console.log("POST method on /projects: SUCCESSFULL");
   res.status(201).json(project);

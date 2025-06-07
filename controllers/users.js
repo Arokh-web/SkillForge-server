@@ -11,25 +11,10 @@ export const getAllUsers = async (req, res, next) => {
 };
 
 // GET ONE /users/me/ - USER ONLY
-
 export const getAuthenticatedUser = async (req, res) => {
   console.log("GET AUTH USER TRIGGERED");
-
-  try {
-    const token = req.cookies.token;
-    if (!token) return res.status(401).json({ error: "No token found" });
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findByPk(decoded.userId, {
-      attributes: { exclude: ["password_hash"] },
-    });
-
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    res.json(user);
-  } catch (err) {
-    res.status(401).json({ error: "Invalid token" });
-  }
+  const user = req.user; // The user is set by the verifyToken middleware now!
+  res.status(200).json(user);
 };
 
 // CREATE ONE user

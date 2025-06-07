@@ -10,10 +10,6 @@ export default (sequelize, DataTypes) => {
       project_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: "project",
-          key: "id",
-        },
       },
       deadline: DataTypes.DATE,
       createdAt: {

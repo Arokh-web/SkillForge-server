@@ -68,3 +68,20 @@ export const signUp = async (req, res, next) => {
     next(error);
   }
 };
+
+// POST /auth/signout
+export const signOut = (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax",
+      maxAge: 6 * 24 * 60 * 60 * 1000,
+    });
+    console.log("POST/SIGNOUT method on /auth/signout SUCCESSFULL");
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Error clearing cookie:", error);
+    return res.status(500).json({ error: "Failed to log out" });
+  }
+};
