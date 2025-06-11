@@ -16,4 +16,8 @@ export const updateProjectSchema = Joi.object({
   deadline: Joi.date(),
   priority: Joi.string().max(25),
   pinned: Joi.boolean(),
+  selected: Joi.boolean().optional(),
+  createdAt: Joi.date().optional(),
+  updatedAt: Joi.date().optional(),
+  completed_at: Joi.date().optional(),
 });

@@ -44,7 +44,7 @@ export const signIn = async (req, res, next) => {
 // POST /auth/signup
 export const signUp = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
 
     const userExists = await User.findOne({ where: { email } });
     if (userExists) {
@@ -57,15 +57,27 @@ export const signUp = async (req, res, next) => {
       username,
       email,
       password_hash: hashedPassword,
+      role: role || "user",
     });
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: "6d",
     });
     console.log("POST/SIGNUP method on /auth/signup SUCCESSFULL");
-    res.status(201);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax",
+      maxAge: 6 * 24 * 60 * 60 * 1000,
+    });
+    res.status(201).json({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+    });
   } catch (error) {
-    next(error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 

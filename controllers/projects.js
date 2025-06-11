@@ -90,9 +90,8 @@ export const deleteProject = async (req, res, next) => {
 export const patchProject = async (req, res, next) => {
   const { id } = req.params;
   const updates = req.body;
-
-  const project = await Project.findByPk({
-    where: { id, user_id: req.user.id },
+  const project = await Project.findOne({
+    where: { id },
   });
 
   if (!project) {
