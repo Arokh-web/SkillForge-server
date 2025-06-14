@@ -17,7 +17,7 @@ export const updateUserSchema = Joi.object({
   role: Joi.string().max(25),
   xp: Joi.number().integer().min(0),
   bio: Joi.string().allow(""),
-  profile_pic: Joi.string().uri(),
+  profile_pic: Joi.string().optional().allow(""),
 });
 
 export const signInSchema = Joi.object({

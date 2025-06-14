@@ -47,8 +47,7 @@ export const createUser = async (req, res, next) => {
 // UPDATE ONE user
 export const updateUser = async (req, res, next) => {
   const { id } = req.params;
-  const { username, email, password_hash, role, xp, bio, profile_pic } =
-    req.body;
+  const { username, email, bio } = req.body;
 
   const user = await User.findByPk(id);
 
@@ -59,13 +58,10 @@ export const updateUser = async (req, res, next) => {
   await user.update({
     username,
     email,
-    password_hash,
-    role,
-    xp,
     bio,
-    profile_pic,
   });
-  console.log("PUT method on /users/:ID: SUCCESSFULL");
+  console.log("PATCH method on /users/:ID: SUCCESSFULL");
+  console.log("User updated:", user);
   res.status(200).json(user);
 };
 

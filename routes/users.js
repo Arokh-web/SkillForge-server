@@ -1,28 +1,24 @@
 import validateSchema from "../middlewares/validateSchema.js";
 import Router from "express";
-
-const usersRouter = Router();
-
 import {
   createUser,
   getAllUsers,
-  // getUserById,
   updateUser,
   deleteUser,
 } from "../controllers/users.js";
-
 import { createUserSchema, updateUserSchema } from "../schemas/userSchema.js";
+import verifyToken from "../middlewares/verifyToken.js";
+
+const usersRouter = Router();
 
 usersRouter
   .route("/")
   .get(getAllUsers)
   .post(validateSchema(createUserSchema), createUser);
 
-// GET, ADMIN ONLY
 usersRouter
   .route("/:id")
-  // .get(getUserById)
-  .put(validateSchema(updateUserSchema), updateUser)
-  .delete(deleteUser);
+  .patch(verifyToken, validateSchema(updateUserSchema), updateUser)
+  .delete(verifyToken, deleteUser);
 
 export default usersRouter;
