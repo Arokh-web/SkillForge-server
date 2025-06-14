@@ -8,12 +8,13 @@ import {
 } from "../controllers/users.js";
 import { createUserSchema, updateUserSchema } from "../schemas/userSchema.js";
 import verifyToken from "../middlewares/verifyToken.js";
+import verifyAdmin from "../middlewares/verifyAdmin.js";
 
 const usersRouter = Router();
 
 usersRouter
   .route("/")
-  .get(getAllUsers)
+  .get(verifyToken, verifyAdmin, getAllUsers)
   .post(validateSchema(createUserSchema), createUser);
 
 usersRouter

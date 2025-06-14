@@ -15,7 +15,10 @@ export const updateTaskSchema = Joi.object({
   title: Joi.string().max(255),
   content: Joi.string().allow(""),
   status: Joi.string().max(25),
-  deadline: Joi.date(),
+  deadline: Joi.date().optional(),
   priority: Joi.string().max(25),
   pinned: Joi.boolean(),
+  createdAt: Joi.date().optional(),
+  updatedAt: Joi.date().optional(),
+  completed_at: Joi.date().optional(),
 });

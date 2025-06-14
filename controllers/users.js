@@ -3,7 +3,7 @@ import ErrorResponse from "../utils/ErrorResponse.js";
 
 const User = models.User;
 
-// GET ALL /users - ADMIN ONLY
+// GET ALL /users - ADMIN ONLY (checked by  middleware)
 export const getAllUsers = async (req, res, next) => {
   const users = await User.findAll();
   console.log("GET method on /users: SUCCESSFULL");

@@ -14,11 +14,12 @@ import {
 
 import { createTaskSchema, updateTaskSchema } from "../schemas/taskSchema.js";
 
+
 const tasksRouter = Router();
 
 tasksRouter
   .route("/")
-  .get(getAllTasks)
+  .get(verifyToken, getAllTasks)
   .post(verifyToken, validateSchema(createTaskSchema), createTask);
 
 tasksRouter
